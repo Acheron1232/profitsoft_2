@@ -24,7 +24,7 @@ public class Book {
     private UUID id;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "author_id", nullable = false)
+    @JoinColumn(name = "authorId", nullable = false)
     private Author author;
 
 

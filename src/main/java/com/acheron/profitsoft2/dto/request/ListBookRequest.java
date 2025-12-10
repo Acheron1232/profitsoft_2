@@ -12,7 +12,7 @@ public record ListBookRequest(
         String title,
         PublishedDate publishedDate,
         String isbn,
-        String author_id,
+        String authorId,
         Integer page,
         Integer size
 ) implements Filterable<Book> {
@@ -32,10 +32,10 @@ public record ListBookRequest(
         }
 
 
-        if (author_id != null && !author_id.isBlank()) {
+        if (authorId != null && !authorId.isBlank()) {
             try {
-                UUID authorId = UUID.fromString(author_id);
-                specification = specification.and(BookSpecification.publishedBy(authorId));
+                UUID authorId1 = UUID.fromString(authorId);
+                specification = specification.and(BookSpecification.publishedBy(authorId1));
             } catch (IllegalArgumentException ignored) {}
         }
 

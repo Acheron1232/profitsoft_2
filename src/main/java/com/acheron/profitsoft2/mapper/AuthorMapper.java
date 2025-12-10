@@ -4,13 +4,17 @@ import com.acheron.profitsoft2.dto.response.AuthorDto;
 import com.acheron.profitsoft2.dto.request.AuthorSaveDto;
 import com.acheron.profitsoft2.entity.Author;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
+/**
+ * Mapper for converting between Author entity and DTOs.
+ */
 @Mapper(componentModel = "spring")
-public abstract class AuthorMapper {
+public interface AuthorMapper {
 
-    public abstract AuthorDto map(Author author);
+    AuthorDto toDto(Author author);
 
-    public abstract Author map(AuthorDto authorDto);
+    Author toEntity(AuthorSaveDto authorSaveDto);
 
-    public abstract Author map(AuthorSaveDto authorSaveDto);
+    void updateEntity(@MappingTarget Author author, AuthorDto authorDto);
 }

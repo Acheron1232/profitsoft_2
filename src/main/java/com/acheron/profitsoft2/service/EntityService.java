@@ -19,10 +19,6 @@ public abstract class EntityService<E, ID> {
         return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(service + " not found: " + id));
     }
 
-    protected List<E> findAll() {
-        return repository.findAll();
-    }
-
     protected E save(@Valid E entity) {
         return repository.save(entity);
     }

@@ -7,61 +7,77 @@ import com.acheron.profitsoft2.entity.Author;
 import com.acheron.profitsoft2.mapper.AuthorMapper;
 import com.acheron.profitsoft2.repository.AuthorRepository;
 import jakarta.validation.Valid;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Service for handling Author entity operations.
+ */
 @Service
-public class AuthorService extends EntityService<Author, UUID> {
+public class AuthorService {
+
+    private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
 
-    public AuthorService(JpaRepository<Author, UUID> repository,AuthorMapper authorMapper) {
-        super(repository);
+    public AuthorService(AuthorRepository authorRepository, AuthorMapper authorMapper) {
+        this.authorRepository = authorRepository;
         this.authorMapper = authorMapper;
     }
 
-    public List<Author> findAll() {
-        AuthorRepository repo = (AuthorRepository) repository;
-        return repo.findAll();
+    /**
+     * Get all authors.
+     *
+     * @return list of AuthorDto
+     */
+    public List<AuthorDto> findAll() {
+        return authorRepository.findAll().stream()
+                .map(authorMapper::toDto)
+                .toList();
     }
 
-    public Optional<Author> findOptionalById(UUID id){
-        return repository.findById(id);
+    /**
+     * Save a new author.
+     *
+     * @param dto AuthorSaveDto
+     * @return saved AuthorDto
+     */
+    public ResponseEntity<AuthorDto> save(@Valid AuthorSaveDto dto) {
+        Author author = authorMapper.toEntity(dto);
+        Author saved = authorRepository.save(author);
+        return ResponseEntity.ok(authorMapper.toDto(saved));
     }
 
-    public ResponseEntity<AuthorDto> save(@Valid AuthorSaveDto dto){
-        Author save = save(authorMapper.map(dto));
-        return ResponseEntity.ok(authorMapper.map(save));
-    }
-
-    public ResponseEntity<AuthorDto> update(UUID id, AuthorUpdateDto dto) {
-
-        AuthorRepository authorRepository = (AuthorRepository) repository;
-
+    /**
+     * Update existing author by ID.
+     *
+     * @param id  Author UUID
+     * @param dto AuthorUpdateDto
+     * @return updated AuthorDto
+     */
+    public ResponseEntity<AuthorDto> update(UUID id, @Valid AuthorUpdateDto dto) {
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Author not found: " + id));
 
-        author.setFirstName(dto.firstName()==null? author.getFirstName():dto.firstName());
-        author.setLastName(dto.lastName()==null? author.getLastName():dto.lastName());
-        author.setContactInfo(dto.contactInfo()==null? author.getContactInfo():dto.contactInfo());
+        if (dto.firstName() != null) author.setFirstName(dto.firstName());
+        if (dto.lastName() != null) author.setLastName(dto.lastName());
+        if (dto.contactInfo() != null) author.setContactInfo(dto.contactInfo());
 
         Author saved = authorRepository.save(author);
-        AuthorDto response = authorMapper.map(saved);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(authorMapper.toDto(saved));
     }
 
+    /**
+     * Delete author by ID.
+     *
+     * @param id Author UUID
+     */
     public void delete(UUID id) {
-        AuthorRepository authorRepository = (AuthorRepository) repository;
         if (!authorRepository.existsById(id)) {
             throw new RuntimeException("Author not found: " + id);
         }
         authorRepository.deleteById(id);
     }
-
-
 }

@@ -1,10 +1,10 @@
 package com.acheron.profitsoft2.mapper;
 
-import com.acheron.profitsoft2.dto.response.BookDto;
 import com.acheron.profitsoft2.dto.request.BookSaveDto;
+import com.acheron.profitsoft2.dto.response.BookDto;
 import com.acheron.profitsoft2.entity.Author;
 import com.acheron.profitsoft2.entity.Book;
-import com.acheron.profitsoft2.service.AuthorService;
+import com.acheron.profitsoft2.repository.AuthorRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.UUID;
 public abstract class BookMapper {
 
     @Autowired
-    protected AuthorService authorService;
+    protected AuthorRepository authorRepository;
 
     public abstract BookDto map(Book book);
 
@@ -27,7 +27,7 @@ public abstract class BookMapper {
     public abstract Book map(BookSaveDto bookSaveDto);
 
     protected Author map(String authorId) {
-        return authorService.findOptionalById(UUID.fromString(authorId))
+        return authorRepository.findById(UUID.fromString(authorId))
                 .orElseThrow(() -> new IllegalArgumentException("Author not found: " + authorId));
     }
 

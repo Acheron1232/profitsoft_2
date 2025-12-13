@@ -7,4 +7,5 @@ public record UploadBookDto(
         String isbn,
         Instant publishDate,
         String authorId
-) {}
+) {
+}

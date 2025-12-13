@@ -10,7 +10,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ErrorMessage{
+public class ErrorMessage {
     private final Instant instant = Instant.now();
     private String message;
     private HttpStatus status;

@@ -1,7 +1,7 @@
 package com.acheron.profitsoft2.mapper;
 
-import com.acheron.profitsoft2.dto.response.AuthorDto;
 import com.acheron.profitsoft2.dto.request.AuthorSaveDto;
+import com.acheron.profitsoft2.dto.response.AuthorDto;
 import com.acheron.profitsoft2.entity.Author;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

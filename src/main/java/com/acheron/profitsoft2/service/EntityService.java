@@ -4,8 +4,6 @@ import com.acheron.profitsoft2.exception.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public abstract class EntityService<E, ID> {
 
     protected final JpaRepository<E, ID> repository;

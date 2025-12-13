@@ -36,7 +36,8 @@ public record ListBookRequest(
             try {
                 UUID authorId1 = UUID.fromString(authorId);
                 specification = specification.and(BookSpecification.publishedBy(authorId1));
-            } catch (IllegalArgumentException ignored) {}
+            } catch (IllegalArgumentException ignored) {
+            }
         }
 
 
@@ -80,6 +81,7 @@ public record ListBookRequest(
             Date publishDate,
             Date publishedBefore,
             Date publishedAfter
-    ) {}
+    ) {
+    }
 }
 

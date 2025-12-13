@@ -7,4 +7,5 @@ import java.util.List;
 public record FilteredBooksResponse(
         List<BookDto> books,
         int totalPages
-) {}
+) {
+}
